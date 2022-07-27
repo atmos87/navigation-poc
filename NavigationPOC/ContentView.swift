@@ -12,14 +12,12 @@ struct ContentView: View {
 
     var body: some View {
         NavigationView {
-            ScrollView {
-                VStack(spacing: 30) {
-                    GestureNavigationView()
-                    OverdragView()
-                    TapNavigationView()
-                }
-                .padding()
+            VStack(spacing: 30) {
+                GestureNavigationView()
+                OverdragView()
+                TapNavigationView()
             }
+            .padding()
             .navigationBarHidden(true)
         }
         .interactivePopNavigationGestures()

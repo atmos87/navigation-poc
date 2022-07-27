@@ -16,7 +16,7 @@ struct ContentSizeReaderPreferenceKey: PreferenceKey {
 extension View {
 
     func sizeReader(size: @escaping (CGSize) -> Void) -> some View {
-        return background(
+        background(
             GeometryReader { geometry in
                 Color.clear
                     .preference(key: ContentSizeReaderPreferenceKey.self, value: geometry.size)

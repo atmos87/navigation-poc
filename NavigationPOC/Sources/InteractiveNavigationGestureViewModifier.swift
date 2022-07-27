@@ -9,64 +9,50 @@ struct InteractiveNavigationGestureViewModifier: ViewModifier {
     
     @State private var delegate = NavigationDelegate()
     @State private var navigationController: UINavigationController?
-    @State private var size: CGSize = .zero
-    
-    @GestureState private var active = false
 
     let operation: Operation
+    
+    var invert: Bool {
+        switch operation {
+        case .push:
+            return true
+        case .pop:
+            return false
+        }
+    }
 
     func body(content: Content) -> some View {
         content
-            .sizeReader { size in
-                self.size = size
-            }
-            .gesture(
-                DragGesture(coordinateSpace: .global)
-                    .updating($active) { value, state, _ in
-                        state = true
-                    }
-                    .onChanged { gesture in
-                        let percent = percent(translation: gesture.translation)
-                        delegate.change(percent: percent)
-                    }
-                    .onEnded { gesture in
-//                        let velocity = CGSize(
-//                            width:  gesture.predictedEndLocation.x - gesture.location.x,
-//                            height: gesture.predictedEndLocation.y - gesture.location.y
-//                        )
-
-                        let percent = percent(translation: gesture.translation)
-                        delegate.end(percent: percent, velocity: .zero/*velocity.width*/)
-
-                        navigationController?.delegate = nil
-                    }
-            )
-            .onChange(of: active) { active in
-                if active && navigationController?.delegate == nil {
-                    delegate.begin()
-                    navigationController?.delegate = delegate
-                    
-                    switch operation {
-                    case .push(let view):
-                        navigationController?.pushViewController(UIHostingController(rootView: view), animated: true)
-                    case .pop:
-                        navigationController?.popViewController(animated: true)
-                    }
+            .drag(axis: .horizontal, invert: invert, onPhaseChange: { phase in
+                switch phase {
+                case .begun:
+                    begin()
+                case .change(let percent):
+                    delegate.change(percent: percent)
+                case .end(let percent, let velocity):
+                    delegate.end(percent: percent, velocity: velocity)
+                    navigationController?.delegate = nil
                 }
-            }
+            })
             .navigationViewStyle(.stack)
             .introspectNavigationController { controller in
                 navigationController = controller
             }
     }
     
-    private func percent(translation: CGSize) -> CGFloat {
-        let width = size.width
+    private func begin() {
+        guard navigationController?.delegate == nil else {
+            return
+        }
+
+        delegate.begin()
+        navigationController?.delegate = delegate
+
         switch operation {
-        case .push:
-            return min(translation.width, 0) / (width * -1)
+        case .push(let view):
+            navigationController?.pushViewController(UIHostingController(rootView: view), animated: true)
         case .pop:
-            return max(translation.width, 0) / width
+            navigationController?.popViewController(animated: true)
         }
     }
 

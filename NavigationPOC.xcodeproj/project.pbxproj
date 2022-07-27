@@ -29,8 +29,12 @@
 		C9A2BD4228911D2700A6714A /* SlideAnimationTransition.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9A2BD4128911D2700A6714A /* SlideAnimationTransition.swift */; };
 		C9A2BD4428911D5200A6714A /* InteractiveNavigationGestureViewModifier.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9A2BD4328911D5200A6714A /* InteractiveNavigationGestureViewModifier.swift */; };
 		C9A2BD472891682100A6714A /* View+Helpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9A2BD462891682100A6714A /* View+Helpers.swift */; };
+		C9A2BD4B289173DA00A6714A /* InteractivePresentationGestureViewModifier.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9A2BD4A289173DA00A6714A /* InteractivePresentationGestureViewModifier.swift */; };
+		C9A2BD4D2891793300A6714A /* PullDownAnimationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9A2BD4C2891793300A6714A /* PullDownAnimationController.swift */; };
 		C9A55886288EC0690071B1CA /* Introspect in Frameworks */ = {isa = PBXBuildFile; productRef = C9A55885288EC0690071B1CA /* Introspect */; };
 		C9AAE64C2890183C009FBF91 /* Present.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9AAE64B2890183C009FBF91 /* Present.swift */; };
+		C9C8C40628918B830075F819 /* DragViewModifier.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9C8C40528918B830075F819 /* DragViewModifier.swift */; };
+		C9C8C4082891948C0075F819 /* QuickSearchView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9C8C4072891948C0075F819 /* QuickSearchView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -57,7 +61,11 @@
 		C9A2BD4128911D2700A6714A /* SlideAnimationTransition.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SlideAnimationTransition.swift; sourceTree = "<group>"; };
 		C9A2BD4328911D5200A6714A /* InteractiveNavigationGestureViewModifier.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InteractiveNavigationGestureViewModifier.swift; sourceTree = "<group>"; };
 		C9A2BD462891682100A6714A /* View+Helpers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "View+Helpers.swift"; sourceTree = "<group>"; };
+		C9A2BD4A289173DA00A6714A /* InteractivePresentationGestureViewModifier.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InteractivePresentationGestureViewModifier.swift; sourceTree = "<group>"; };
+		C9A2BD4C2891793300A6714A /* PullDownAnimationController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PullDownAnimationController.swift; sourceTree = "<group>"; };
 		C9AAE64B2890183C009FBF91 /* Present.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Present.swift; sourceTree = "<group>"; };
+		C9C8C40528918B830075F819 /* DragViewModifier.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DragViewModifier.swift; sourceTree = "<group>"; };
+		C9C8C4072891948C0075F819 /* QuickSearchView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QuickSearchView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -78,8 +86,11 @@
 				C965444A2875D524006DFB2E /* AdaptiveSheet.swift */,
 				C9AAE64B2890183C009FBF91 /* Present.swift */,
 				C9A2BD4128911D2700A6714A /* SlideAnimationTransition.swift */,
+				C9A2BD4C2891793300A6714A /* PullDownAnimationController.swift */,
 				C9A2BD4328911D5200A6714A /* InteractiveNavigationGestureViewModifier.swift */,
+				C9A2BD4A289173DA00A6714A /* InteractivePresentationGestureViewModifier.swift */,
 				C9A2BD462891682100A6714A /* View+Helpers.swift */,
+				C9C8C40528918B830075F819 /* DragViewModifier.swift */,
 			);
 			path = Sources;
 			sourceTree = "<group>";
@@ -112,6 +123,7 @@
 				C900D8262890550600C3B07B /* GestureNavigationView.swift */,
 				C900D8282890551B00C3B07B /* OverdragView.swift */,
 				C900D82A2890554100C3B07B /* TapNavigationView.swift */,
+				C9C8C4072891948C0075F819 /* QuickSearchView.swift */,
 			);
 			path = Layout;
 			sourceTree = "<group>";
@@ -256,12 +268,16 @@
 				C900D8292890551B00C3B07B /* OverdragView.swift in Sources */,
 				C965443F2875C4A3006DFB2E /* ContentView.swift in Sources */,
 				C9A2BD4428911D5200A6714A /* InteractiveNavigationGestureViewModifier.swift in Sources */,
+				C9A2BD4D2891793300A6714A /* PullDownAnimationController.swift in Sources */,
 				C900D8272890550600C3B07B /* GestureNavigationView.swift in Sources */,
 				C900D8132890515400C3B07B /* NavigationTypeButton.swift in Sources */,
 				C900D81D2890519B00C3B07B /* PushExample.swift in Sources */,
 				C900D81B2890518D00C3B07B /* AdaptiveSheetExample.swift in Sources */,
+				C9A2BD4B289173DA00A6714A /* InteractivePresentationGestureViewModifier.swift in Sources */,
 				C900D8172890517100C3B07B /* SheetPresentationExample.swift in Sources */,
+				C9C8C40628918B830075F819 /* DragViewModifier.swift in Sources */,
 				C900D8152890516000C3B07B /* NavigationPageView.swift in Sources */,
+				C9C8C4082891948C0075F819 /* QuickSearchView.swift in Sources */,
 				C900D8192890518000C3B07B /* FullscreenCoverExample.swift in Sources */,
 				C9A2BD472891682100A6714A /* View+Helpers.swift in Sources */,
 				C900D821289051B000C3B07B /* ZoomExample.swift in Sources */,

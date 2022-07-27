@@ -27,6 +27,9 @@ struct GestureNavigationView: View {
                 RoundedRectangle(cornerRadius: 10)
                     .foregroundColor(Color(.systemGray4))
             )
+            .interactivePresentation {
+                QuickSearchView()
+            }
 
             ZStack {
                 Text("Drag in from right")
