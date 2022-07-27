@@ -46,6 +46,10 @@ struct GestureNavigationView: View {
                 RoundedRectangle(cornerRadius: 10)
                     .foregroundColor(Color(.systemGray4))
             )
+            .interactivePushNavigationGesture(
+                destination: NavigationPageView(type: .push)
+                    .navigationBarHidden(true)
+            )
         }
     }
 

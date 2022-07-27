@@ -1,6 +1,6 @@
 import UIKit
 
-final class SlideAnimationTransition: NSObject, UIViewControllerAnimatedTransitioning {
+final class SlidePopAnimationTransition: NSObject, UIViewControllerAnimatedTransitioning {
     
     func animateTransition(using transitionContext: UIViewControllerContextTransitioning) {
         guard let fromView = transitionContext.viewController(forKey: UITransitionContextViewControllerKey.from)?.view,
@@ -41,6 +41,44 @@ final class SlideAnimationTransition: NSObject, UIViewControllerAnimatedTransiti
                 fromView.layer.opacity = 1.0
                 fromView.layer.shadowOpacity = 0
 
+                transitionContext.completeTransition(!transitionContext.transitionWasCancelled)
+            }
+        )
+    }
+
+    func transitionDuration(using transitionContext: UIViewControllerContextTransitioning?) -> TimeInterval {
+        0.3
+    }
+
+}
+
+final class SlidePushAnimationTransition: NSObject, UIViewControllerAnimatedTransitioning {
+
+    func animateTransition(using transitionContext: UIViewControllerContextTransitioning) {
+        guard let fromView = transitionContext.viewController(forKey: UITransitionContextViewControllerKey.from)?.view,
+              let toView = transitionContext.viewController(forKey: UITransitionContextViewControllerKey.to)?.view else { return }
+
+        let containerView = transitionContext.containerView
+        let width = containerView.frame.width
+
+        toView.frame.origin.x = width
+        toView.layer.shadowRadius = 20.0
+        toView.layer.shadowOpacity = 0.3
+
+        containerView.insertSubview(toView, aboveSubview: fromView)
+
+        UIView.animate(
+            withDuration: transitionDuration(using: transitionContext),
+            delay: 0,
+            options: .curveLinear,
+            animations: {
+                fromView.frame.origin.x = -width / 3.33
+                fromView.layer.opacity = 0.9
+                toView.frame.origin.x = 0
+            },
+            completion: { finished in
+                toView.layer.shadowRadius = 0
+                toView.layer.shadowOpacity = 0
                 transitionContext.completeTransition(!transitionContext.transitionWasCancelled)
             }
         )

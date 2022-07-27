@@ -2,58 +2,74 @@ import SwiftUI
 
 struct InteractiveNavigationGestureViewModifier: ViewModifier {
     
+    enum Operation {
+        case push(AnyView)
+        case pop
+    }
+    
     @State private var delegate = NavigationDelegate()
     @State private var navigationController: UINavigationController?
+    @State private var size: CGSize = .zero
     
-    @GestureState private var translation: CGSize = .zero
     @GestureState private var active = false
 
+    let operation: Operation
+
     func body(content: Content) -> some View {
-        GeometryReader { proxy in
-            content
-                .navigationViewStyle(.stack)
-                .gesture(
-                    DragGesture()
-                        .updating($translation) { value, state, _ in
-                            state = value.translation
-                        }
-                        .updating($active) { value, state, _ in
-                            state = true
-                        }
-                        .onChanged { gesture in
-                            let percent = percent(proxy: proxy)
-                            delegate.change(percent: percent)
-                        }
-                        .onEnded { gesture in
-                            let velocity = CGSize(
-                                width:  gesture.predictedEndLocation.x - gesture.location.x,
-                                height: gesture.predictedEndLocation.y - gesture.location.y
-                            )
+        content
+            .sizeReader { size in
+                self.size = size
+            }
+            .gesture(
+                DragGesture(coordinateSpace: .global)
+                    .updating($active) { value, state, _ in
+                        state = true
+                    }
+                    .onChanged { gesture in
+                        let percent = percent(translation: gesture.translation)
+                        delegate.change(percent: percent)
+                    }
+                    .onEnded { gesture in
+//                        let velocity = CGSize(
+//                            width:  gesture.predictedEndLocation.x - gesture.location.x,
+//                            height: gesture.predictedEndLocation.y - gesture.location.y
+//                        )
 
-                            let percent = percent(proxy: proxy)
-                            delegate.end(percent: percent, velocity: velocity.width)
+                        let percent = percent(translation: gesture.translation)
+                        delegate.end(percent: percent, velocity: .zero/*velocity.width*/)
 
-                            navigationController?.delegate = nil
-                        }
-                )
-                .onChange(of: active) { active in
-                    if active {
-                        delegate.begin()
-                        navigationController?.delegate = delegate
+                        navigationController?.delegate = nil
+                    }
+            )
+            .onChange(of: active) { active in
+                if active && navigationController?.delegate == nil {
+                    delegate.begin()
+                    navigationController?.delegate = delegate
+                    
+                    switch operation {
+                    case .push(let view):
+                        navigationController?.pushViewController(UIHostingController(rootView: view), animated: true)
+                    case .pop:
                         navigationController?.popViewController(animated: true)
                     }
                 }
-                .introspectNavigationController { controller in
-                    navigationController = controller
-                }
-        }
+            }
+            .navigationViewStyle(.stack)
+            .introspectNavigationController { controller in
+                navigationController = controller
+            }
     }
     
-    private func percent(proxy: GeometryProxy) -> CGFloat {
-        let width = proxy.frame(in: .global).width
-        let percent = max(translation.width, 0) / width
-        
-        return percent
+    private func percent(translation: CGSize) -> CGFloat {
+        let width = size.width
+        switch operation {
+        case .push:
+            print("push \(translation.width)")
+            return min(translation.width, 0) / (width * -1)
+        case .pop:
+            print("pop \(translation.width)")
+            return max(translation.width, 0) / width
+        }
     }
 
 }
@@ -64,7 +80,14 @@ extension InteractiveNavigationGestureViewModifier {
         private var transition: UIPercentDrivenInteractiveTransition?
         
         func navigationController(_ navigationController: UINavigationController, animationControllerFor operation: UINavigationController.Operation, from fromVC: UIViewController, to toVC: UIViewController) -> UIViewControllerAnimatedTransitioning? {
-            SlideAnimationTransition()
+            switch operation {
+            case .push:
+                return SlidePushAnimationTransition()
+            case .pop:
+                return SlidePopAnimationTransition()
+            default:
+                return nil
+            }
         }
 
         func navigationController(_ navigationController: UINavigationController, interactionControllerFor animationController: UIViewControllerAnimatedTransitioning) -> UIViewControllerInteractiveTransitioning? {
@@ -81,7 +104,7 @@ extension InteractiveNavigationGestureViewModifier {
         }
         
         func end(percent: CGFloat, velocity: CGFloat) {
-            if percent > 0.5 || velocity > 100 {
+            if percent > 0.5 || abs(velocity) > 100 {
                 transition?.finish()
             } else {
                 transition?.cancel()
@@ -100,8 +123,37 @@ extension InteractiveNavigationGestureViewModifier {
 
 extension View {
     
-    func interactiveNavigationGestures() -> some View {
-        modifier(InteractiveNavigationGestureViewModifier())
+    func interactivePopNavigationGestures() -> some View {
+        modifier(InteractiveNavigationGestureViewModifier(operation: .pop))
     }
     
+    func interactivePushNavigationGesture<Content: View>(destination: Content) -> some View {
+        modifier(InteractiveNavigationGestureViewModifier(
+            operation: .push(
+                AnyView(
+                    destination
+                )
+            )
+        ))
+    }
+
+    func sizeReader(size: @escaping (CGSize) -> Void) -> some View {
+        return background(
+            GeometryReader { geometry in
+                Color.clear
+                    .preference(key: ContentSizeReaderPreferenceKey.self, value: geometry.size)
+                    .onPreferenceChange(ContentSizeReaderPreferenceKey.self) { newValue in
+                        DispatchQueue.main.async {
+                            size(newValue)
+                        }
+                    }
+            }
+            .hidden()
+        )
+    }
+}
+
+struct ContentSizeReaderPreferenceKey: PreferenceKey {
+    static var defaultValue: CGSize { return CGSize() }
+    static func reduce(value: inout CGSize, nextValue: () -> CGSize) { value = nextValue() }
 }

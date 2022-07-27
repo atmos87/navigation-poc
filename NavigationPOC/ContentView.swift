@@ -22,7 +22,7 @@ struct ContentView: View {
             }
             .navigationBarHidden(true)
         }
-        .interactiveNavigationGestures()
+        .interactivePopNavigationGestures()
         .presentationContainer()
     }
 
