@@ -64,10 +64,8 @@ struct InteractiveNavigationGestureViewModifier: ViewModifier {
         let width = size.width
         switch operation {
         case .push:
-            print("push \(translation.width)")
             return min(translation.width, 0) / (width * -1)
         case .pop:
-            print("pop \(translation.width)")
             return max(translation.width, 0) / width
         }
     }
@@ -137,23 +135,4 @@ extension View {
         ))
     }
 
-    func sizeReader(size: @escaping (CGSize) -> Void) -> some View {
-        return background(
-            GeometryReader { geometry in
-                Color.clear
-                    .preference(key: ContentSizeReaderPreferenceKey.self, value: geometry.size)
-                    .onPreferenceChange(ContentSizeReaderPreferenceKey.self) { newValue in
-                        DispatchQueue.main.async {
-                            size(newValue)
-                        }
-                    }
-            }
-            .hidden()
-        )
-    }
-}
-
-struct ContentSizeReaderPreferenceKey: PreferenceKey {
-    static var defaultValue: CGSize { return CGSize() }
-    static func reduce(value: inout CGSize, nextValue: () -> CGSize) { value = nextValue() }
 }

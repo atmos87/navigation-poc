@@ -35,7 +35,7 @@ final class SlidePopAnimationTransition: NSObject, UIViewControllerAnimatedTrans
                 fromView.layer.shadowOpacity = 0.1
             
                 },
-            completion: { finished in
+            completion: { _ in
                 toView.layer.opacity = 1.0
                 toView.layer.shadowOpacity = 0
                 fromView.layer.opacity = 1.0
@@ -76,7 +76,7 @@ final class SlidePushAnimationTransition: NSObject, UIViewControllerAnimatedTran
                 fromView.layer.opacity = 0.9
                 toView.frame.origin.x = 0
             },
-            completion: { finished in
+            completion: { _ in
                 toView.layer.shadowRadius = 0
                 toView.layer.shadowOpacity = 0
                 transitionContext.completeTransition(!transitionContext.transitionWasCancelled)
