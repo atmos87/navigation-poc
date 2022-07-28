@@ -20,13 +20,13 @@ struct QuickSearchView: View {
                     .foregroundColor(.white)
             )
             .padding()
-                .introspectTextField { field in
-                    if showKeyboard {
-                        field.becomeFirstResponder()
-                    } else {
-                        field.resignFirstResponder()
-                    }
+            .introspectTextField { field in
+                if showKeyboard {
+                    field.becomeFirstResponder()
+                } else {
+                    field.resignFirstResponder()
                 }
+            }
             Spacer()
         }
         .background(

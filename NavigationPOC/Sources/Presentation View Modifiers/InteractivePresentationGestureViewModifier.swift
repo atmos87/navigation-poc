@@ -100,7 +100,7 @@ class PresentationController: UIPresentationController {
     override func presentationTransitionWillBegin() {
         dimmingView.frame = containerView?.frame ?? .zero
 
-        containerView?.insertSubview(dimmingView, at: 0)
+        containerView?.insertSubview(dimmingView, belowSubview: presentedViewController.view)
         presentedViewController.transitionCoordinator?.animate(alongsideTransition: { _ in
             self.dimmingView.alpha = 1
         })
@@ -124,7 +124,7 @@ class PresentationController: UIPresentationController {
         }
     }
 
-    override var shouldRemovePresentersView: Bool { return false }
+    override var shouldRemovePresentersView: Bool { return true }
 }
 
 
