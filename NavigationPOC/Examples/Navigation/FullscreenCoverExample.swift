@@ -13,7 +13,7 @@ struct FullscreenCoverExample: View {
     var body: some View {
         NavigationTypeButton(isPresented: $isPresented, type: .fullscreenCover)
             .fullScreenCover(isPresented: $isPresented) {
-                NavigationPageView(type: .fullscreenCover)
+                NavigationTypePageView(type: .fullscreenCover)
                     .overlay(
                         Button(action: { isPresented.toggle() }) {
                             Text("Tap close")

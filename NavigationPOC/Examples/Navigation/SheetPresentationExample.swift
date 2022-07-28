@@ -13,7 +13,7 @@ struct SheetPresentationExample: View {
     var body: some View {
         NavigationTypeButton(isPresented: $isPresented, type: .sheet)
             .sheet(isPresented: $isPresented) {
-                NavigationPageView(type: .sheet)
+                NavigationTypePageView(type: .sheet)
             }
     }
 }

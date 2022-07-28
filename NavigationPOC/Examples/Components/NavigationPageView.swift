@@ -1,21 +1,21 @@
 //
-//  SwiftUIView.swift
+//  NavigationTypePageView.swift
 //  NavigationPOC
 //
-//  Created by Dino Constantinou on 26/07/2022.
+//  Created by Dino Constantinou on 28/07/2022.
 //
 
 import SwiftUI
 
 struct NavigationPageView: View {
-
-    let type: NavigationType
+    let title: String
+    let content: String
     
     var body: some View {
         ZStack {
-            Text("\(NavigationType.allCases.firstIndex(of: type) ?? 0 + 1)")
+            Text(title)
                 .font(.system(size: 100, weight: .medium, design: .default))
-            Text(type.rawValue.uppercased())
+            Text(content)
                 .font(.system(size: 26, weight: .medium, design: .default))
                 .frame(maxHeight: .infinity, alignment: .top)
         }
@@ -24,5 +24,4 @@ struct NavigationPageView: View {
         .padding(30)
         .background(Color(.systemGray4))
     }
-
 }

@@ -23,7 +23,7 @@ struct ZoomExample: View {
             }
         }
         .present(isPresented: $isPresented.animation(.spring())) {
-            NavigationPageView(type: .zoom)
+            NavigationTypePageView(type: .zoom)
                 .matchedGeometryEffect(id: "zoom", in: zoom)
         }
     }

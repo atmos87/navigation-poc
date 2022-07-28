@@ -13,7 +13,7 @@ struct AdaptiveSheetExample: View {
     var body: some View {
         NavigationTypeButton(isPresented: $isPresented, type: .adaptiveSheet)
             .adaptiveSheet(isPresented: $isPresented, detents: [.medium(), .large()], smallestUndimmedDetentIdentifier: .large) {
-                NavigationPageView(type: .adaptiveSheet)
+                NavigationTypePageView(type: .adaptiveSheet)
             }
     }
 }

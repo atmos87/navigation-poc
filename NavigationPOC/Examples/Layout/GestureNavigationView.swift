@@ -54,8 +54,17 @@ struct GestureNavigationView: View {
                     .foregroundColor(Color(.systemGray4))
             )
             .interactivePushNavigationGesture(
-                destination: NavigationPageView(type: .push)
-                    .navigationBarHidden(true)
+                destination: NavigationPageView(
+                    title: "👈",
+                    content: "Drag From Right".uppercased()
+                )
+                .overlay(
+                    Text("Drag to close")
+                        .font(.system(size: 26, weight: .medium, design: .default))
+                        .foregroundColor(.white)
+                        .frame(maxHeight: .infinity, alignment: .bottom)
+                )
+                .navigationBarHidden(true)
             )
         }
     }

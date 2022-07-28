@@ -16,7 +16,11 @@ struct QuickCommentExample: View {
             .present(isPresented: $isPresented) {
                 TextField("Quick Comment", text: $text, onCommit: { self.isPresented = false })
                     .introspectTextField { field in
-                        field.becomeFirstResponder()
+                        if isPresented {
+                            field.becomeFirstResponder()
+                        } else {
+                            field.resignFirstResponder()
+                        }
                     }
                     .padding()
                     .background(

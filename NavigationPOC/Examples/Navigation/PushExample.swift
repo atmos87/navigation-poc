@@ -10,7 +10,7 @@ import SwiftUI
 struct PushExample: View {
     var body: some View {
         NavigationLink(
-            destination: NavigationPageView(type: .push)
+            destination: NavigationTypePageView(type: .push)
                 .navigationBarHidden(true)
         ) {
             NavigationTypeBadge(type: .push)
