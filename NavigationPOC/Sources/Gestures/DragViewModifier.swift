@@ -22,8 +22,8 @@ struct DragViewModifier: ViewModifier {
     
     func body(content: Content) -> some View {
         content
-            .sizeReader { size in
-                self.size = size
+            .frameReader { frame in
+                self.size = frame.size
             }
             .gesture(
                 DragGesture(coordinateSpace: .global)
