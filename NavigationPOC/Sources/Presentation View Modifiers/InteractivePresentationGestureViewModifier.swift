@@ -7,6 +7,7 @@ struct InteractivePresentationGestureViewModifier: ViewModifier {
     @State private var controller: UIViewController?
     
     let content: AnyView
+    let completion: (() -> Void)?
 
     func body(content: Content) -> some View {
         content
@@ -33,7 +34,7 @@ struct InteractivePresentationGestureViewModifier: ViewModifier {
         host.transitioningDelegate = delegate
         host.modalPresentationStyle = .custom
         
-        controller?.present(host, animated: true)
+        controller?.present(host, animated: true, completion: completion)
     }
 
 }
@@ -93,10 +94,9 @@ class PresentationController: UIPresentationController {
         let dimmingView = UIView()
         dimmingView.backgroundColor = .black.withAlphaComponent(0.9)
         dimmingView.alpha = 0
-        
         return dimmingView
     }()
-    
+
     override func presentationTransitionWillBegin() {
         dimmingView.frame = containerView?.frame ?? .zero
 
@@ -130,11 +130,12 @@ class PresentationController: UIPresentationController {
 
 extension View {
 
-    func interactivePresentation<Content: View>(@ViewBuilder content: () -> Content) -> some View {
+    func interactivePresentation<Content: View>(@ViewBuilder content: () -> Content, completion: (() -> Void)? = nil) -> some View {
         modifier(InteractivePresentationGestureViewModifier(
             content: AnyView(
                 content()
-            )
+            ),
+            completion: completion
         ))
     }
 

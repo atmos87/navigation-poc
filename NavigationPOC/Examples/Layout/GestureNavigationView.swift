@@ -9,6 +9,8 @@ import SwiftUI
 
 struct GestureNavigationView: View {
     
+    @State private var showKeyboard = false
+    
     var body: some View {
         SectionView(title: "Gesture Navigation") {
             VStack(spacing: 20) {
@@ -28,7 +30,9 @@ struct GestureNavigationView: View {
                     .foregroundColor(Color(.systemGray4))
             )
             .interactivePresentation {
-                QuickSearchView()
+                QuickSearchView(showKeyboard: $showKeyboard)
+            } completion: {
+                showKeyboard =  true
             }
 
             ZStack {
